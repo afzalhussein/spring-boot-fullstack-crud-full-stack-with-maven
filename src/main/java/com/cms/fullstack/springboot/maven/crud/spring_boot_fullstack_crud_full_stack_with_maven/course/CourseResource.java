@@ -2,6 +2,7 @@ package com.cms.fullstack.springboot.maven.crud.spring_boot_fullstack_crud_full_
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,14 +29,14 @@ public class CourseResource {
 	}
 
 	@GetMapping("/instructors/{username}/courses/{id}")
-	public Course getCourse(@PathVariable String username, @PathVariable long id) {
+	public Optional<Course> getCourse(@PathVariable String username, @PathVariable long id) {
 		return courseManagementService.findById(id);
 	}
 
 	@DeleteMapping("/instructors/{username}/courses/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable String username, long id) {
-		Course course = courseManagementService.deleteById(id);
-		if (course != null) {
+		Optional<Course> course = courseManagementService.deleteById(id);
+		if (course.isPresent()) {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.notFound().build();
